@@ -5,10 +5,12 @@ struct WeatherModel {
     let cityName: String
     let temperature: Double
     
+    
     var temperatureString: String {
         return String(format: "%.1f", temperature)
     }
     
+    // Selects weather condition icon
     var conditionName: String {
         switch conditionId {
         case 200...232:

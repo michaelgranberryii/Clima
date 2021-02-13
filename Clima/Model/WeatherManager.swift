@@ -7,23 +7,34 @@ protocol WeatherManagerDelegate {
 }
 
 struct WeatherManager {
-    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=7cf1906a0e92a257403b76bdc2733766&units=metric"
+    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?"
+    let API = "7cf1906a0e92a257403b76bdc2733766"
+    let units = "metric"
     
     var delegate: WeatherManagerDelegate?
     
+    // Concatenates string url
     func fetchWeather(cityName: String) {
-        let urlString = "\(weatherURL)&q=\(cityName)"
+        let urlString = "\(weatherURL)q=\(cityName)&appid=\(API)&units=\(units)"
         performRequest(with: urlString)
     }
     
+    // Gets lat and long
     func fetchWeather(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
         let urlString = "\(weatherURL)&lat=\(latitude)&lon=\(longitude)"
         performRequest(with: urlString)
     }
     
+    //
     func performRequest(with urlString: String) {
+        
+        // 1. Create a URL
         if let url = URL(string: urlString) {
+            
+            // 2. Create a URLSession
             let session = URLSession(configuration: .default)
+            
+            // 3. Give the session a task
             let task = session.dataTask(with: url) { (data, response, error) in
                 if error != nil {
                     self.delegate?.didFailWithError(error: error!)
@@ -35,10 +46,12 @@ struct WeatherManager {
                     }
                 }
             }
+            // 4. Start the task
             task.resume()
         }
     }
     
+    // JSON Decoding
     func parseJSON(_ weatherData: Data) -> WeatherModel? {
         let decoder = JSONDecoder()
         do {

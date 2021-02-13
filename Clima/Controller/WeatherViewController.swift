@@ -28,6 +28,7 @@ class WeatherViewController: UIViewController {
 
 extension WeatherViewController: UITextFieldDelegate {
     
+    // Search button
     @IBAction func searchPressed(_ sender: UIButton) {
         searchTextField.endEditing(true)
     }
@@ -47,18 +48,14 @@ extension WeatherViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         if let city = searchTextField.text {
             weatherManager.fetchWeather(cityName: city)
         }
-        
         searchTextField.text = ""
-        
     }
 }
 
 //MARK: - WeatherManagerDelegate
-
 
 extension WeatherViewController: WeatherManagerDelegate {
     
@@ -77,9 +74,9 @@ extension WeatherViewController: WeatherManagerDelegate {
 
 //MARK: - CLLocationManagerDelegate
 
-
 extension WeatherViewController: CLLocationManagerDelegate {
     
+    // Current location button
     @IBAction func locationPressed(_ sender: UIButton) {
         locationManager.requestLocation()
     }
